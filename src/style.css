@@ -7,3 +7,7 @@
 .legal{border-left:4px solid #ff5e57;background:linear-gradient(110deg,#241719,#171a1c)}.legal h4{color:#ff756f;letter-spacing:.8px}.legal p{color:#d6d6d6}.legal strong{display:block;margin-top:18px;padding:13px;border:1px solid #ff5e57;color:#fff;line-height:1.5}
 @media(max-width:1050px){.actions .button.ghost{display:none}}
 @media(max-width:650px){.actions>.button{display:none}.moreVideos{grid-template-columns:1fr}.video{height:auto;aspect-ratio:16/9}}
+
+/* Official Numerai CLOUD #865 artwork used by the referenced homepage. */
+.mesh{background-color:#202b34;background-image:linear-gradient(rgba(10,17,22,.22),rgba(10,17,22,.32)),url('/assets/bg-clouds.jpg');background-position:center top;background-repeat:no-repeat;background-size:cover}.hero:after,.submit:after{content:none}.hero{background-size:100% auto;background-color:#121a21}.submit{background-position:center 42%;background-size:cover}
+@media(max-width:900px){.hero{background-size:auto 100%;background-position:center top}}

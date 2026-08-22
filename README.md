@@ -38,6 +38,22 @@ The project provides educational interfaces, official Numerai community links, v
 - A current stable Rust toolchain
 - A Telegram Bot Token from `@BotFather`
 
+### Build with Make
+
+The project includes a Makefile that provides one interface for the website and Rust bot:
+
+```bash
+make help        # list all commands
+make install     # install/fetch dependencies
+make dev         # start the website
+make check       # validate website and bot
+make build       # production website + release Rust bot
+make bot         # run the Telegram bot
+make clean       # remove generated artifacts
+```
+
+For a clean production build, run `make release`.
+
 ### Website setup
 
 ```bash
@@ -105,6 +121,8 @@ This project is educational and does not provide financial, investment, legal, o
 
 Numerai and related names, marks, media, and linked resources belong to their respective owners. Faro Neural is an independent interface demonstration. Official external links direct users to Numerai-controlled destinations.
 
+The homepage background follows Numerai's referenced artwork: Trevor Paglen, *CLOUD #865 Hough Circle Transform* (2019). The image is retained locally for interface fidelity; ownership and all applicable rights remain with their respective rights holders.
+
 ---
 
 ## Español
@@ -138,6 +156,22 @@ El proyecto ofrece interfaces educativas, enlaces oficiales de la comunidad Nume
 - npm
 - Una versión estable y actual de Rust
 - Un token de bot de Telegram obtenido mediante `@BotFather`
+
+### Compilación con Make
+
+El proyecto incluye un Makefile que unifica las tareas del sitio y del bot en Rust:
+
+```bash
+make help        # mostrar todos los comandos
+make install     # instalar/descargar dependencias
+make dev         # iniciar el sitio web
+make check       # validar el sitio y el bot
+make build       # sitio de producción + bot Rust optimizado
+make bot         # ejecutar el bot de Telegram
+make clean       # eliminar artefactos generados
+```
+
+Para obtener una compilación de producción limpia, ejecuta `make release`.
 
 ### Instalación del sitio web
 
@@ -205,6 +239,8 @@ Este proyecto es educativo y no proporciona asesoramiento financiero, de inversi
 ### Marcas y atribución
 
 Numerai y sus nombres, marcas, contenidos multimedia y recursos enlazados pertenecen a sus respectivos propietarios. Faro Neural es una demostración independiente de interfaz. Los enlaces externos oficiales dirigen a destinos controlados por Numerai.
+
+El fondo de la página principal sigue la obra referenciada por Numerai: Trevor Paglen, *CLOUD #865 Hough Circle Transform* (2019). La imagen se conserva localmente para mantener la fidelidad de la interfaz; la titularidad y todos los derechos aplicables pertenecen a sus respectivos titulares.
 
 ---
 

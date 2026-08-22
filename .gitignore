@@ -1,0 +1,5 @@
+.env
+node_modules/
+dist/
+bot/target/
+.DS_Store

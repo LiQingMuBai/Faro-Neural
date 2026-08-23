@@ -102,7 +102,6 @@ Telegram users cannot access your computer through a `localhost` link. Set `PUBL
 ### Bot commands
 
 - `/start` — main menu
-- `/socials` — official Numerai community links
 - `/legal` — legal and responsible-use notice
 - `/language` — English or Spanish
 - `/help` — command help
@@ -219,7 +218,6 @@ Los usuarios de Telegram no pueden acceder a tu equipo mediante un enlace `local
 ### Comandos del bot
 
 - `/start` — menú principal
-- `/socials` — enlaces oficiales de la comunidad Numerai
 - `/legal` — aviso legal y de uso responsable
 - `/language` — inglés o español
 - `/help` — ayuda de comandos

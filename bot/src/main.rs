@@ -87,10 +87,10 @@ fn text(lang: Language, key: &str) -> &'static str {
             "🤖 <b>Asistente de la comunidad Numerai</b>\n\nExplora la experiencia de ciencia de datos con IA, recursos oficiales de Numerai, vídeos y enlaces de la comunidad.\n\n⚠️ Este bot independiente no es Numerai y no ofrece asesoramiento financiero ni de inversión."
         }
         (Language::En, "help") => {
-            "Choose an option or use:\n/start — Main menu\n/socials — Official links\n/join — Join our team and get $10 mobile credit\n/legal — Legal notice\n/language — English / Español"
+            "Choose an option or use:\n/start — Main menu\n/join — Join our team and get $10 mobile credit\n/legal — Legal notice\n/language — English / Español"
         }
         (Language::Es, "help") => {
-            "Elige una opción o usa:\n/start — Menú principal\n/socials — Enlaces oficiales\n/join — Únete al equipo y recibe $10 de saldo móvil\n/legal — Aviso legal\n/language — English / Español"
+            "Elige una opción o usa:\n/start — Menú principal\n/join — Únete al equipo y recibe $10 de saldo móvil\n/legal — Aviso legal\n/language — English / Español"
         }
         (Language::En, "legal") => {
             "🚫 <b>ZERO TOLERANCE FOR ILLEGAL ACTIVITY</b>\n\nIllegal use is strictly and absolutely prohibited. Do not use this bot, website, code, data, models, links, or infrastructure to commit, facilitate, plan, conceal, promote, or assist any unlawful activity.\n\nAny unlawful conduct is undertaken solely by the person involved, without this bot’s or website’s authorization, participation, endorsement, or benefit, and is unrelated to them. The responsible person bears sole responsibility for all consequences. Access may be blocked, relevant records preserved, and competent authorities assisted where required or permitted by law.\n\n🌍 <b>REGIONAL ACCESS RESTRICTIONS</b>\n\nThis service is not available to users located in Mainland China, Hong Kong, Macao, North Korea, Russia, Iran, Syria, Cuba, or Belarus. Accessing or offering access to this service from these locations is prohibited. This list may be updated to reflect applicable laws, sanctions, and service-availability requirements.\n\n<b>If you intend to engage in illegal activity or are located in a restricted region, do not use this bot or website.</b>"
@@ -249,7 +249,6 @@ impl Bot {
             .to_lowercase();
         match command.as_str() {
             "/start"=>self.home(chat_id,lang).await,
-            "/socials"=>self.send(chat_id,socials(),back_keyboard(lang)).await,
             "/join"=>self.send(chat_id,text(lang,"join_promo"),join_keyboard(lang,&self.customer_service_url)).await,
             "/legal"=>self.send(chat_id,text(lang,"legal"),back_keyboard(lang)).await,
             "/language"=>self.send(chat_id,"🌍 Choose language / Elige idioma:",json!({"inline_keyboard":[[{"text":"English","callback_data":"lang_en"},{"text":"Español","callback_data":"lang_es"}]]})).await,
@@ -280,7 +279,7 @@ async fn main() -> Result<()> {
         languages: Arc::new(RwLock::new(HashMap::new())),
     };
     let _: Value=bot.request("setMyCommands",json!({"commands":[
-        {"command":"start","description":"Open the main menu"},{"command":"socials","description":"Official Numerai links"},{"command":"join","description":"Join our team and get $10 mobile credit"},{"command":"legal","description":"Legal notice"},{"command":"language","description":"English / Español"},{"command":"help","description":"Help"}
+        {"command":"start","description":"Open the main menu"},{"command":"join","description":"Join our team and get $10 mobile credit"},{"command":"legal","description":"Legal notice"},{"command":"language","description":"English / Español"},{"command":"help","description":"Help"}
     ]})).await?;
     println!("Rust Telegram bot is running. Press Ctrl+C to stop.");
     let mut offset = 0_i64;

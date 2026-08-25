@@ -103,7 +103,6 @@ Telegram users cannot access your computer through a `localhost` link. Set `PUBL
 
 - `/start` — main menu
 - `/legal` — legal and responsible-use notice
-- `/language` — English or Spanish
 - `/help` — command help
 
 ### Legal and responsible use
@@ -219,7 +218,6 @@ Los usuarios de Telegram no pueden acceder a tu equipo mediante un enlace `local
 
 - `/start` — menú principal
 - `/legal` — aviso legal y de uso responsable
-- `/language` — inglés o español
 - `/help` — ayuda de comandos
 
 ### Uso legal y responsable

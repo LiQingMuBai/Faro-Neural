@@ -12,6 +12,7 @@ struct Bot {
     api: String,
     site: String,
     customer_service_url: String,
+    donation_url: String,
     languages: Arc<RwLock<HashMap<i64, Language>>>,
 }
 
@@ -87,10 +88,10 @@ fn text(lang: Language, key: &str) -> &'static str {
             "🤖 <b>Asistente de la comunidad Numerai</b>\n\nExplora la experiencia de ciencia de datos con IA, recursos oficiales de Numerai, vídeos y enlaces de la comunidad.\n\n⚠️ Este bot independiente no es Numerai y no ofrece asesoramiento financiero ni de inversión."
         }
         (Language::En, "help") => {
-            "Choose an option or use:\n/start — Main menu\n/join — Join our team and get $10 mobile credit\n/legal — Legal notice"
+            "Choose an option or use:\n/start — Main menu\n/join — Join our team and get $10 mobile credit\n/donate — Support this project\n/legal — Legal notice"
         }
         (Language::Es, "help") => {
-            "Elige una opción o usa:\n/start — Menú principal\n/join — Únete al equipo y recibe $10 de saldo móvil\n/legal — Aviso legal"
+            "Elige una opción o usa:\n/start — Menú principal\n/join — Únete al equipo y recibe $10 de saldo móvil\n/donate — Apoya este proyecto\n/legal — Aviso legal"
         }
         (Language::En, "legal") => {
             "🚫 <b>ZERO TOLERANCE FOR ILLEGAL ACTIVITY</b>\n\nIllegal use is strictly and absolutely prohibited. Do not use this bot, website, code, data, models, links, or infrastructure to commit, facilitate, plan, conceal, promote, or assist any unlawful activity.\n\nAny unlawful conduct is undertaken solely by the person involved, without this bot’s or website’s authorization, participation, endorsement, or benefit, and is unrelated to them. The responsible person bears sole responsibility for all consequences. Access may be blocked, relevant records preserved, and competent authorities assisted where required or permitted by law.\n\n🌍 <b>REGIONAL ACCESS RESTRICTIONS</b>\n\nThis service is not available to users located in Mainland China, Hong Kong, Macao, North Korea, Russia, Iran, Syria, Cuba, or Belarus. Accessing or offering access to this service from these locations is prohibited. This list may be updated to reflect applicable laws, sanctions, and service-availability requirements.\n\n<b>If you intend to engage in illegal activity or are located in a restricted region, do not use this bot or website.</b>"
@@ -116,6 +117,14 @@ fn text(lang: Language, key: &str) -> &'static str {
         }
         (Language::En, "contact_service") => "Contact customer service",
         (Language::Es, "contact_service") => "Contactar con atención al cliente",
+        (Language::En, "donate") => "☕ Donate",
+        (Language::Es, "donate") => "☕ Donar",
+        (Language::En, "donate_message") => {
+            "☕ <b>Support Faro Neural</b>\n\nYour donation helps cover hosting, Telegram bot operation, maintenance, security improvements, and new multilingual content. Thank you for supporting independent AI and data-science education.\n\nDonations are voluntary and do not constitute an investment or guarantee any financial return."
+        }
+        (Language::Es, "donate_message") => {
+            "☕ <b>Apoya Faro Neural</b>\n\nTu donación ayuda a cubrir el alojamiento, el funcionamiento del bot de Telegram, el mantenimiento, las mejoras de seguridad y nuevo contenido multilingüe. Gracias por apoyar la educación independiente en IA y ciencia de datos.\n\nLas donaciones son voluntarias, no constituyen una inversión ni garantizan ningún rendimiento financiero."
+        }
         (Language::En, "legal_btn") => "⚠️ Legal notice",
         (Language::Es, "legal_btn") => "⚠️ Aviso legal",
         (Language::En, "language") => "🌍 Language",
@@ -126,11 +135,12 @@ fn text(lang: Language, key: &str) -> &'static str {
     }
 }
 
-fn main_keyboard(lang: Language, site: &str) -> Value {
+fn main_keyboard(lang: Language, site: &str, donation_url: &str) -> Value {
     json!({"inline_keyboard":[
         [{"text":text(lang,"website"),"url":site},{"text":text(lang,"socials"),"callback_data":"socials"}],
         [{"text":text(lang,"videos"),"callback_data":"videos"},{"text":text(lang,"legal_btn"),"callback_data":"legal"}],
         [{"text":text(lang,"join_team"),"callback_data":"join_team"}],
+        [{"text":text(lang,"donate"),"url":donation_url}],
         [{"text":text(lang,"language"),"callback_data":"language"}]
     ]})
 }
@@ -142,6 +152,13 @@ fn back_keyboard(lang: Language) -> Value {
 fn join_keyboard(lang: Language, customer_service_url: &str) -> Value {
     json!({"inline_keyboard":[
         [{"text":text(lang,"contact_service"),"url":customer_service_url}],
+        [{"text":text(lang,"back"),"callback_data":"home"}]
+    ]})
+}
+
+fn donate_keyboard(lang: Language, donation_url: &str) -> Value {
+    json!({"inline_keyboard":[
+        [{"text":text(lang,"donate"),"url":donation_url}],
         [{"text":text(lang,"back"),"callback_data":"home"}]
     ]})
 }
@@ -192,7 +209,7 @@ impl Bot {
         self.send(
             chat_id,
             &format!("{}\n\n{}", text(lang, "welcome"), text(lang, "choose")),
-            main_keyboard(lang, &self.site),
+            main_keyboard(lang, &self.site, &self.donation_url),
         )
         .await
     }
@@ -257,13 +274,25 @@ impl Bot {
                 )
                 .await
             }
+            "/donate" => {
+                self.send(
+                    chat_id,
+                    text(lang, "donate_message"),
+                    donate_keyboard(lang, &self.donation_url),
+                )
+                .await
+            }
             "/legal" => {
                 self.send(chat_id, text(lang, "legal"), back_keyboard(lang))
                     .await
             }
             _ => {
-                self.send(chat_id, text(lang, "help"), main_keyboard(lang, &self.site))
-                    .await
+                self.send(
+                    chat_id,
+                    text(lang, "help"),
+                    main_keyboard(lang, &self.site, &self.donation_url),
+                )
+                .await
             }
         }
     }
@@ -288,10 +317,12 @@ async fn main() -> Result<()> {
         customer_service_url: env::var("CUSTOMER_SERVICE_URL")
             .or_else(|_| env::var("PUBLIC_SITE_URL"))
             .unwrap_or_else(|_| "http://localhost:5173".into()),
+        donation_url: env::var("DONATION_URL")
+            .unwrap_or_else(|_| "https://buymeacoffee.com/liqingmubai".into()),
         languages: Arc::new(RwLock::new(HashMap::new())),
     };
     let _: Value=bot.request("setMyCommands",json!({"commands":[
-        {"command":"start","description":"Open the main menu"},{"command":"join","description":"Join our team and get $10 mobile credit"},{"command":"legal","description":"Legal notice"},{"command":"help","description":"Help"}
+        {"command":"start","description":"Open the main menu"},{"command":"join","description":"Join our team and get $10 mobile credit"},{"command":"donate","description":"Support this project"},{"command":"legal","description":"Legal notice"},{"command":"help","description":"Help"}
     ]})).await?;
     println!("Rust Telegram bot is running. Press Ctrl+C to stop.");
     let mut offset = 0_i64;

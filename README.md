@@ -102,6 +102,7 @@ Telegram users cannot access your computer through a `localhost` link. Set `PUBL
 ### Bot commands
 
 - `/start` — main menu
+- `/donate` — support the project through Buy Me a Coffee
 - `/legal` — legal and responsible-use notice
 - `/help` — command help
 
@@ -217,6 +218,7 @@ Los usuarios de Telegram no pueden acceder a tu equipo mediante un enlace `local
 ### Comandos del bot
 
 - `/start` — menú principal
+- `/donate` — apoyar el proyecto mediante Buy Me a Coffee
 - `/legal` — aviso legal y de uso responsable
 - `/help` — ayuda de comandos
 
